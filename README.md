@@ -20,3 +20,8 @@ We have migrated to a fully manual, un-gamified lifecycle for managing remote ta
 
 ## Technical Details
 Built with React, TypeScript, and Vite. Designed to operate completely client-side without backend, auth, or active AI integrations during this beta phase.
+
+
+Next session:
+Start v0.3 by improving multi-mission support.
+Current v0.2 still feels like one main mission plus task stack. The next product step is to make Review Debt and Focus Budget work across multiple missions, while keeping the Remote Cockpit calm and manual-first.
