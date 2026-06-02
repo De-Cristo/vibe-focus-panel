@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import { Target, Edit3, Save, X } from 'lucide-react';
-
-export interface Mission {
-  title: string;
-  successCondition: string;
-  nextHumanAction: string;
-  progress: number;
-  currentStep: string;
-}
+import { Mission, MissionStatus } from '../types';
 
 interface MissionCardProps {
   mission: Mission;
   setMission: (mission: Mission) => void;
-  waitingMode: boolean;
+  status: MissionStatus;
+  setStatus: (status: MissionStatus) => void;
 }
+
+const STATUS_OPTIONS: MissionStatus[] = [
+  'created', 'delegated', 'running', 'blocked', 'returned', 'reviewing', 'parked', 'closed', 'abandoned'
+];
 
 export const MissionCard: React.FC<MissionCardProps> = ({
   mission,
   setMission,
-  waitingMode,
+  status,
+  setStatus,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(mission.title);
@@ -48,24 +47,35 @@ export const MissionCard: React.FC<MissionCardProps> = ({
   };
 
   return (
-    <div className={`console-panel rounded-xl p-6 border transition-all duration-300 ${
-      waitingMode ? 'border-zinc-800' : 'border-zinc-900'
-    }`}>
+    <div className={`console-panel rounded-xl p-6 border transition-all duration-300 border-zinc-900`}>
       {/* Header */}
       <div className="flex items-center justify-between border-b border-zinc-900 pb-3 mb-4">
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-zinc-500" />
           <span className="font-mono-tech text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Active Mission</span>
         </div>
-        {!isEditing && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="p-1 rounded text-zinc-600 hover:text-zinc-300 transition-colors cursor-pointer"
-            title="Edit mission parameters"
+        
+        <div className="flex items-center gap-3">
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as MissionStatus)}
+            className="bg-zinc-950 border border-zinc-800 rounded px-2 py-1 text-[10px] font-mono-tech text-zinc-300 focus:outline-none focus:border-zinc-700 uppercase"
           >
-            <Edit3 className="h-3.5 w-3.5" />
-          </button>
-        )}
+            {STATUS_OPTIONS.map(s => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+
+          {!isEditing && (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="p-1 rounded text-zinc-600 hover:text-zinc-300 transition-colors cursor-pointer"
+              title="Edit mission parameters"
+            >
+              <Edit3 className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
       </div>
 
       {isEditing ? (

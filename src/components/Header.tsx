@@ -1,40 +1,51 @@
 import React from 'react';
-import { Terminal, RotateCcw, Power, CheckSquare } from 'lucide-react';
-
-export type CockpitStatus = 'running' | 'waiting' | 'review';
+import { Terminal, RotateCcw, AlertTriangle } from 'lucide-react';
+import { MissionStatus, FocusWindow } from '../types';
 
 interface HeaderProps {
-  status: CockpitStatus;
-  setStatus: (status: CockpitStatus) => void;
-  logsCount: number;
-  activeTasksCount: number;
+  status: MissionStatus;
+  focusWindow: FocusWindow;
+  activeProjectsCount: number;
+  runningJobsCount: number;
+  reviewDebtCount: number;
   onReset: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   status,
-  setStatus,
+  focusWindow,
+  activeProjectsCount,
+  runningJobsCount,
+  reviewDebtCount,
   onReset,
 }) => {
+  const isBudgetExceeded = 
+    activeProjectsCount > focusWindow.maxActiveProjects ||
+    runningJobsCount > focusWindow.maxRunningJobs ||
+    reviewDebtCount > focusWindow.maxReviewDebt;
+
   const getStatusText = () => {
-    switch (status) {
-      case 'running':
-        return 'AI // EXECUTING';
-      case 'waiting':
-        return 'DEV // AWAITING INPUT';
-      case 'review':
-        return 'GATE // PR SIGN-OFF';
-    }
+    return `MISSION // ${status.toUpperCase()}`;
   };
 
   const getStatusColor = () => {
     switch (status) {
-      case 'running':
+      case 'created':
+      case 'delegated':
         return 'text-zinc-400 border-zinc-800';
-      case 'waiting':
+      case 'running':
+        return 'text-emerald-400 border-emerald-950/60';
+      case 'blocked':
+      case 'parked':
         return 'text-amber-500 border-amber-950/60';
-      case 'review':
+      case 'returned':
+      case 'reviewing':
         return 'text-cyan-400 border-cyan-950/60';
+      case 'closed':
+      case 'abandoned':
+        return 'text-zinc-600 border-zinc-900';
+      default:
+        return 'text-zinc-400 border-zinc-800';
     }
   };
 
@@ -45,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-2">
           <Terminal className="h-4 w-4 text-zinc-500" />
           <h1 className="text-sm font-semibold tracking-wider text-zinc-100 font-mono-tech m-0">
-            FOCUS_COCKPIT // <span className="text-zinc-500">CONSOLE</span>
+            FOCUS_COCKPIT // <span className="text-zinc-500">CONSOLE v0.2</span>
           </h1>
         </div>
 
@@ -56,8 +67,30 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Console Controls */}
-        <div className="flex items-center gap-3">
+        {/* Console Controls and Budget */}
+        <div className="flex items-center gap-4">
+          {/* Focus Budget Metrics */}
+          <div className="flex items-center gap-3 text-[10px] font-mono-tech">
+            <span className={activeProjectsCount > focusWindow.maxActiveProjects ? 'text-zinc-300' : 'text-zinc-500'}>
+              Active: {activeProjectsCount}/{focusWindow.maxActiveProjects}
+            </span>
+            <span className={runningJobsCount > focusWindow.maxRunningJobs ? 'text-zinc-300' : 'text-zinc-500'}>
+              Running: {runningJobsCount}/{focusWindow.maxRunningJobs}
+            </span>
+            <span className={reviewDebtCount > focusWindow.maxReviewDebt ? 'text-zinc-300' : 'text-zinc-500'}>
+              Review: {reviewDebtCount}/{focusWindow.maxReviewDebt}
+            </span>
+            
+            {isBudgetExceeded && (
+              <div className="flex items-center gap-1.5 text-zinc-300 bg-zinc-900/60 px-2 py-1 rounded border border-zinc-800" title="Review, park, or close something before starting more work.">
+                <AlertTriangle className="h-3 w-3 text-zinc-400" />
+                <span>Focus budget is full</span>
+              </div>
+            )}
+          </div>
+
+          <span className="text-zinc-800 text-[10px] select-none">|</span>
+
           {/* Reset Link */}
           <button
             onClick={onReset}
@@ -67,48 +100,6 @@ export const Header: React.FC<HeaderProps> = ({
             <RotateCcw className="h-3 w-3" />
             RESET_DEMO
           </button>
-
-          <span className="text-zinc-800 text-[10px] select-none">|</span>
-
-          {/* Action buttons (spacious, minimal, simple borders) */}
-          {status === 'running' && (
-            <div className="flex gap-2">
-              <button
-                onClick={() => setStatus('waiting')}
-                className="flex items-center gap-1 px-3 py-1.5 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 hover:bg-zinc-900 text-zinc-400 hover:text-zinc-200 font-mono-tech text-[10px] cursor-pointer transition-colors"
-              >
-                <Power className="h-3 w-3" />
-                PAUSE_AI
-              </button>
-              <button
-                onClick={() => setStatus('review')}
-                className="flex items-center gap-1 px-3 py-1.5 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 hover:bg-zinc-900 text-zinc-400 hover:text-zinc-200 font-mono-tech text-[10px] cursor-pointer transition-colors"
-              >
-                <CheckSquare className="h-3 w-3" />
-                RETURN_TASK
-              </button>
-            </div>
-          )}
-
-          {status === 'waiting' && (
-            <button
-              onClick={() => setStatus('running')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-amber-500/30 bg-amber-950/20 hover:bg-amber-950/40 text-amber-400 font-mono-tech text-[10px] cursor-pointer transition-colors"
-            >
-              <Power className="h-3 w-3" />
-              RESUME_AI
-            </button>
-          )}
-
-          {status === 'review' && (
-            <button
-              onClick={() => setStatus('running')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded border border-cyan-500/30 bg-cyan-950/20 hover:bg-cyan-950/40 text-cyan-400 font-mono-tech text-[10px] cursor-pointer transition-colors"
-            >
-              <Terminal className="h-3 w-3" />
-              FORCE_RESUME
-            </button>
-          )}
         </div>
       </div>
     </header>

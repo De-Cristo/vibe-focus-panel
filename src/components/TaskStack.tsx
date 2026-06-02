@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Tag, FileText } from 'lucide-react';
 
-export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: 'active' | 'waiting' | 'later' | 'done';
-  priority: 'low' | 'medium' | 'high';
-  category: string;
-  createdAt: string;
-  resumeNote?: string;
-}
+import { Task } from '../types';
 
 interface TaskStackProps {
   tasks: Task[];
