@@ -168,7 +168,7 @@ function App() {
   const isWaitingMode = state.missionStatus === 'blocked' || state.missionStatus === 'parked';
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col font-sans select-none pb-12 text-zinc-100">
+    <div className="min-h-screen bg-zinc-900 flex flex-col font-sans select-none pb-16 text-zinc-100">
       
       {/* 1. Header */}
       <Header
@@ -182,14 +182,14 @@ function App() {
       
       {/* 2. Top Alert Banner for Waiting/Blocked Mode */}
       {isWaitingMode && (
-        <div className="w-full max-w-7xl mx-auto px-6 mt-6 shrink-0">
-          <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div className="flex items-start gap-3 flex-1 min-w-0">
-              <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+        <div className="w-full max-w-7xl mx-auto px-6 mt-8 shrink-0">
+          <div className="bg-amber-950/20 border border-amber-900/30 rounded-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm">
+            <div className="flex items-start gap-4 flex-1 min-w-0">
+              <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
-                <span className="block text-[10px] font-mono-tech text-zinc-500 uppercase tracking-wider font-semibold">Active Wait Condition</span>
-                <p className="text-sm text-zinc-350 mt-0.5 leading-relaxed font-semibold">
-                  Mission is <span className="text-zinc-200 font-normal font-mono-tech uppercase">{state.missionStatus}</span>. Manual intervention or unblocking required.
+                <span className="block text-sm font-semibold text-amber-500">Waiting for intervention</span>
+                <p className="text-base text-zinc-300 mt-1 leading-relaxed">
+                  Mission is currently <strong>{state.missionStatus}</strong>. Manual intervention or unblocking is required to proceed.
                 </p>
               </div>
             </div>
@@ -198,46 +198,44 @@ function App() {
       )}
 
       {/* 3. Cockpit Workspace */}
-      <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-6 md:py-8">
-        <div className="lg:grid lg:grid-cols-12 lg:gap-6 space-y-6 lg:space-y-0">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-8 md:py-12">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8 space-y-8 lg:space-y-0">
           
-          {/* LEFT COLUMN: Mission & Activity Status (Span 4) */}
-          <div className="lg:col-span-4 flex flex-col gap-6">
+          {/* LEFT COLUMN: Mission & Activity Status (Span 5) */}
+          <div className="lg:col-span-5 flex flex-col gap-8">
             <MissionCard
               mission={state.mission}
               setMission={handleSetMission}
               status={state.missionStatus}
               setStatus={handleSetStatus}
             />
+            <ResumeNote
+              note={state.note}
+              setNote={handleSetNote}
+              waitingMode={isWaitingMode}
+            />
             <ActivityHistory
               logs={state.activityHistory}
             />
           </div>
 
-          {/* RIGHT COLUMN: Tasks, Handoff and Metrics (Span 8) */}
-          <div className="lg:col-span-8 flex flex-col gap-6">
+          {/* RIGHT COLUMN: Tasks and Metrics (Span 7) */}
+          <div className="lg:col-span-7 flex flex-col gap-8">
             {/* Task Stack Board */}
             <TaskStack
               tasks={state.tasks}
               setTasks={handleSetTasks}
             />
 
-            {/* Bottom Row: Handoff Notes & Quality Gates / Close Dialog */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <ResumeNote
-                note={state.note}
-                setNote={handleSetNote}
-                waitingMode={isWaitingMode}
-              />
-              <ReturnedReviewPanel
-                status={state.missionStatus}
-                closeResult={state.closeResult}
-                closeNote={state.closeNote}
-                setCloseResult={handleSetCloseResult}
-                setCloseNote={handleSetCloseNote}
-                onCloseMission={handleCloseMission}
-              />
-            </div>
+            {/* Bottom Row: Quality Gates / Close Dialog */}
+            <ReturnedReviewPanel
+              status={state.missionStatus}
+              closeResult={state.closeResult}
+              closeNote={state.closeNote}
+              setCloseResult={handleSetCloseResult}
+              setCloseNote={handleSetCloseNote}
+              onCloseMission={handleCloseMission}
+            />
           </div>
 
         </div>

@@ -51,54 +51,57 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="w-full border-b border-zinc-900 bg-zinc-950 px-6 py-4 sticky top-0 z-50">
-      <div className="mx-auto flex flex-col gap-3 md:flex-row md:items-center md:justify-between max-w-7xl">
+      <div className="mx-auto flex flex-col gap-4 md:flex-row md:items-center md:justify-between max-w-7xl">
         {/* Title */}
-        <div className="flex items-center gap-2">
-          <Terminal className="h-4 w-4 text-zinc-500" />
-          <h1 className="text-sm font-semibold tracking-wider text-zinc-100 font-mono-tech m-0">
-            FOCUS_COCKPIT // <span className="text-zinc-500">CONSOLE v0.2</span>
+        <div>
+          <h1 className="text-xl font-semibold text-zinc-100 m-0">
+            Focus Cockpit
           </h1>
+          <p className="text-sm text-zinc-400 mt-1">
+            A calm place to track AI work and close loops.
+          </p>
         </div>
 
-        {/* Status indicator */}
+        {/* Right side: Controls and Budget */}
         <div className="flex items-center gap-4">
-          <div className={`px-2.5 py-1 rounded border text-[10px] font-mono-tech tracking-widest font-semibold bg-zinc-900/40 ${getStatusColor()}`}>
-            {getStatusText()}
+          
+          {/* Status indicator */}
+          <div className={`px-3 py-1.5 rounded-full text-xs font-medium border bg-zinc-800/50 ${getStatusColor()}`}>
+            Current state: {status.charAt(0).toUpperCase() + status.slice(1)}
           </div>
-        </div>
 
-        {/* Console Controls and Budget */}
-        <div className="flex items-center gap-4">
+          <span className="text-zinc-700 select-none">|</span>
+
           {/* Focus Budget Metrics */}
-          <div className="flex items-center gap-3 text-[10px] font-mono-tech">
-            <span className={activeProjectsCount > focusWindow.maxActiveProjects ? 'text-zinc-300' : 'text-zinc-500'}>
-              Active: {activeProjectsCount}/{focusWindow.maxActiveProjects}
-            </span>
-            <span className={runningJobsCount > focusWindow.maxRunningJobs ? 'text-zinc-300' : 'text-zinc-500'}>
-              Running: {runningJobsCount}/{focusWindow.maxRunningJobs}
-            </span>
-            <span className={reviewDebtCount > focusWindow.maxReviewDebt ? 'text-zinc-300' : 'text-zinc-500'}>
-              Review: {reviewDebtCount}/{focusWindow.maxReviewDebt}
-            </span>
+          <div className="flex items-center gap-2">
+            <div className={`px-3 py-1.5 rounded-full text-xs font-medium border ${activeProjectsCount > focusWindow.maxActiveProjects ? 'bg-zinc-800 border-zinc-700 text-zinc-200' : 'bg-transparent border-zinc-800 text-zinc-400'}`}>
+              Active {activeProjectsCount} / {focusWindow.maxActiveProjects}
+            </div>
+            <div className={`px-3 py-1.5 rounded-full text-xs font-medium border ${runningJobsCount > focusWindow.maxRunningJobs ? 'bg-zinc-800 border-zinc-700 text-zinc-200' : 'bg-transparent border-zinc-800 text-zinc-400'}`}>
+              Running {runningJobsCount} / {focusWindow.maxRunningJobs}
+            </div>
+            <div className={`px-3 py-1.5 rounded-full text-xs font-medium border ${reviewDebtCount > focusWindow.maxReviewDebt ? 'bg-zinc-800 border-zinc-700 text-zinc-200' : 'bg-transparent border-zinc-800 text-zinc-400'}`}>
+              Review {reviewDebtCount} / {focusWindow.maxReviewDebt}
+            </div>
             
             {isBudgetExceeded && (
-              <div className="flex items-center gap-1.5 text-zinc-300 bg-zinc-900/60 px-2 py-1 rounded border border-zinc-800" title="Review, park, or close something before starting more work.">
-                <AlertTriangle className="h-3 w-3 text-zinc-400" />
-                <span>Focus budget is full</span>
+              <div className="flex items-center gap-1.5 text-zinc-300 bg-zinc-800 px-3 py-1.5 rounded-full border border-zinc-700 ml-1" title="Review, park, or close something before starting more work.">
+                <AlertTriangle className="h-3.5 w-3.5 text-zinc-400" />
+                <span className="text-xs font-medium">Focus budget full</span>
               </div>
             )}
           </div>
 
-          <span className="text-zinc-800 text-[10px] select-none">|</span>
+          <span className="text-zinc-700 select-none">|</span>
 
           {/* Reset Link */}
           <button
             onClick={onReset}
-            className="flex items-center gap-1 text-[10px] font-mono-tech text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer border-none bg-transparent"
+            className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer border-none bg-transparent"
             title="Reset console to default template"
           >
-            <RotateCcw className="h-3 w-3" />
-            RESET_DEMO
+            <RotateCcw className="h-4 w-4" />
+            Reset demo
           </button>
         </div>
       </div>
