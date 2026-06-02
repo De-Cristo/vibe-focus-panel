@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Target, Edit3, Save, X } from 'lucide-react';
-import { Mission, MissionStatus } from '../types';
+import type { Mission, MissionStatus } from '../types';
 
 interface MissionCardProps {
   mission: Mission;

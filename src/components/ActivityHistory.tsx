@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Activity } from 'lucide-react';
-import { ActivityLog } from '../types';
+import type { ActivityLog } from '../types';
 
 interface ActivityHistoryProps {
   logs: ActivityLog[];

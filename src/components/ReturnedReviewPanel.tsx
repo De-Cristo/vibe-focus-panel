@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldCheck, ShieldAlert, CheckSquare } from 'lucide-react';
-import { MissionStatus, CloseResult } from '../types';
+import type { MissionStatus, CloseResult } from '../types';
 
 interface ReturnedReviewPanelProps {
   status: MissionStatus;

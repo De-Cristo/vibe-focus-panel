@@ -6,7 +6,7 @@ import { ActivityHistory } from './components/ActivityHistory';
 import { TaskStack } from './components/TaskStack';
 import { ResumeNote } from './components/ResumeNote';
 import { ReturnedReviewPanel } from './components/ReturnedReviewPanel';
-import { 
+import type { 
   CockpitStateV2, 
   Mission, 
   Task, 

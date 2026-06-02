@@ -1,6 +1,6 @@
 import React from 'react';
 import { Terminal, RotateCcw, AlertTriangle } from 'lucide-react';
-import { MissionStatus, FocusWindow } from '../types';
+import type { MissionStatus, FocusWindow } from '../types';
 
 interface HeaderProps {
   status: MissionStatus;

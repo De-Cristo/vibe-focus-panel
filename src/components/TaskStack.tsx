@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Tag, FileText } from 'lucide-react';
 
-import { Task } from '../types';
+import type { Task } from '../types';
 
 interface TaskStackProps {
   tasks: Task[];
