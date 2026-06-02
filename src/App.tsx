@@ -74,7 +74,20 @@ const DEFAULT_V2_STATE: CockpitStateV2 = {
 const loadState = (key: string, defaultValue: CockpitStateV2): CockpitStateV2 => {
   try {
     const saved = localStorage.getItem(key);
-    return saved ? JSON.parse(saved) : defaultValue;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Safely merge to prevent undefined property crashes on older state
+      return {
+        ...defaultValue,
+        ...parsed,
+        focusWindow: parsed.focusWindow || defaultValue.focusWindow,
+        activityHistory: parsed.activityHistory || defaultValue.activityHistory,
+        tasks: parsed.tasks || defaultValue.tasks,
+        rules: parsed.rules || defaultValue.rules,
+        mission: parsed.mission || defaultValue.mission,
+      };
+    }
+    return defaultValue;
   } catch (e) {
     console.error(`Failed to load localStorage key: ${key}`, e);
     return defaultValue;
