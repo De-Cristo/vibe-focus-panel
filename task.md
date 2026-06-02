@@ -1,0 +1,21 @@
+# Tasks
+
+- `[x]` Scaffolding & Configuration
+  - `[x]` Install dependencies (Tailwind, Lucide-react, etc.)
+  - `[x]` Setup Tailwind CSS v4 in `vite.config.ts` and `src/index.css`
+  - `[x]` Clean up default Vite placeholder assets and code styles
+- `[x]` UI Component Development
+  - `[x]` Create `src/components/Header.tsx` (Status bar & Mode Toggle)
+  - `[x]` Create `src/components/MissionCard.tsx` (Objective & Progress editing)
+  - `[x]` Create `src/components/AiTaskStatus.tsx` (Thoughts & simulated console logs)
+  - `[x]` Create `src/components/TaskStack.tsx` (Active/Waiting/Later columns)
+  - `[x]` Create `src/components/ResumeNote.tsx` (Markdown text handoff editor)
+  - `[x]` Create `src/components/QualityGate.tsx` (Metric checklist & dynamic blocker shield)
+- `[x]` App Integration & Simulation Logic
+  - `[x]` Compose final layout grid in `src/App.tsx`
+  - `[x]` Add global accent shift states (Execution Mode vs Waiting Mode)
+  - `[x]` Implement simulated AI thought loop & log generator
+- `[x]` Verification & Polish
+  - `[x]` Run TypeScript checking (`pnpm tsc --noEmit`)
+  - `[x]` Run Vite project build check (`pnpm build`)
+  - `[x]` Document final changes in `walkthrough.md`
